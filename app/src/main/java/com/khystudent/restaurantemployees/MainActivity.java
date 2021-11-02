@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     TextView medianSalary;
 
     ArrayList<String> list = new ArrayList<>();
+    SharedPreferences sharedPreferences;
 
 
     @Override
@@ -41,22 +43,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        nameField = findViewById(R.id.name_field);
-        idField = findViewById(R.id.id_number_field);
-        jobPositionField = findViewById(R.id.position_field);
-        salaryField = findViewById(R.id.salary_field);
-        dateOfEmplField = findViewById(R.id.empl_date_field);
-        saveBtn = findViewById(R.id.save_btn);
+        setFields();
+         sharedPreferences = getSharedPreferences("com.khystudent.restaurantemployees.MyPrefs", MODE_PRIVATE);
 
-        numberOfEmp = findViewById(R.id.num_of_empl);
-        medianSalary = findViewById(R.id.median_salary);
-
-        employeeList = findViewById(R.id.employee_list);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
         employeeList.setAdapter(adapter);
 
-        ReaderWriter.loadArchive(ReaderWriter.getFile(MainActivity.this), list);
+        ReaderWriter.loadArchive(ReaderWriter.getFolder(MainActivity.this), list);
+        Employee.loadData(sharedPreferences);
+
+        updateField();
+
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
                 getText();
                 adapter.notifyDataSetChanged();
-
+                saveData();
 
             }
         });
@@ -91,12 +89,16 @@ public class MainActivity extends AppCompatActivity {
 
         Employee saved = new Employee(name, Integer.parseInt(id), job, Integer.parseInt(salary), date);
 
-        numberOfEmp.setText(String.valueOf(Employee.numberOfEmployees));
-        medianSalary.setText(String.valueOf(Employee.sumOfSalaries/Employee.numberOfEmployees));
-
+        updateField();
         clearFields();
 
 
+    }
+
+    protected void updateField(){
+
+        numberOfEmp.setText(String.valueOf(Employee.numberOfEmployees));
+        medianSalary.setText(String.valueOf(Employee.sumOfSalaries/Employee.numberOfEmployees));
     }
 
     protected void clearFields(){
@@ -112,12 +114,30 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        ReaderWriter.saveFile(ReaderWriter.getFile(MainActivity.this), list);
+        ReaderWriter.saveFile(ReaderWriter.getFolder(MainActivity.this), list);
+        ReaderWriter.saveToShared(sharedPreferences);
 
 
     }
 
     protected void saveData(){
-        ReaderWriter.saveFile(ReaderWriter.getFile(MainActivity.this), list);
+        ReaderWriter.saveFile(ReaderWriter.getFolder(MainActivity.this), list);
+        ReaderWriter.saveToShared(sharedPreferences);
+
+    }
+
+    protected void setFields(){
+
+        nameField = findViewById(R.id.name_field);
+        idField = findViewById(R.id.id_number_field);
+        jobPositionField = findViewById(R.id.position_field);
+        salaryField = findViewById(R.id.salary_field);
+        dateOfEmplField = findViewById(R.id.empl_date_field);
+        saveBtn = findViewById(R.id.save_btn);
+
+        numberOfEmp = findViewById(R.id.num_of_empl);
+        medianSalary = findViewById(R.id.median_salary);
+
+        employeeList = findViewById(R.id.employee_list);
     }
 }

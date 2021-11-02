@@ -1,5 +1,7 @@
 package com.khystudent.restaurantemployees;
 
+import android.content.SharedPreferences;
+
 public class Employee {
 
     private String name;
@@ -22,6 +24,11 @@ public class Employee {
         numberOfEmployees ++;
         sumOfSalaries += salary;
 
+    }
+
+    public static void loadData(SharedPreferences sharedPreferences){
+        numberOfEmployees = ReaderWriter.loadNumberOfEmp(sharedPreferences);
+        sumOfSalaries = ReaderWriter.loadSumOfSalaries(sharedPreferences);
     }
 
 }
