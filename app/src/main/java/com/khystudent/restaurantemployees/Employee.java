@@ -12,11 +12,11 @@ public class Employee {
     protected static int sumOfSalaries;
 
 
-    private void Employee(String name, String position, int id, int salary, String dateOfEmploy){
+    public Employee(String name, int id, String position, int salary, String dateOfEmploy){
 
         this.name = name;
-        this.position = position;
         this.id = id;
+        this.position = position;
         this.salary = salary;
         this.dateOfEmploy = dateOfEmploy;
         numberOfEmployees ++;
