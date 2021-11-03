@@ -1,24 +1,20 @@
 package com.khystudent.restaurantemployees;
 
-import static android.content.ContentValues.TAG;
-
-import androidx.annotation.RequiresPermission;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.DatePickerDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,8 +28,9 @@ public class MainActivity extends AppCompatActivity {
     EditText jobPositionField;
     EditText salaryField;
     EditText dateOfEmpField;
+    RecyclerView recyclerView;
 
-    ListView employeeList;
+    //ListView employeeList;
 
     Button saveBtn;
 
@@ -41,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
     TextView medianSalary;
 
     ArrayList<String> list = new ArrayList<>();
-    ArrayAdapter<String> adapter;
     SharedPreferences sharedPreferences;
 
     String name;
@@ -49,17 +45,25 @@ public class MainActivity extends AppCompatActivity {
 
     final Calendar myCalendar = Calendar.getInstance();
 
+    public static String empData;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        recyclerView = (RecyclerView) findViewById(R.id.employee_list);
+        CustomListAdapter adapter = new CustomListAdapter(list, MainActivity.this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+
+
+
         setFields();
 
         sharedPreferences = getSharedPreferences("com.khystudent.restaurantemployees.MyPrefs", MODE_PRIVATE);
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
-        employeeList.setAdapter(adapter);
         ReaderWriter.loadArchive(ReaderWriter.getFolder(MainActivity.this), list);
         ReaderWriter.loadData(sharedPreferences);
 
@@ -74,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 getText();
-                adapter.notifyDataSetChanged();
             }
         });
 
@@ -103,7 +106,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        employeeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+        /*
+        .setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
@@ -125,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         employeeList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -140,6 +146,8 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+         */
     }
 
     protected void getText() {
@@ -215,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
         numberOfEmp = findViewById(R.id.num_of_empl);
         medianSalary = findViewById(R.id.median_salary);
 
-        employeeList = findViewById(R.id.employee_list);
+
     }
 
     private void updateLabel() {
@@ -224,4 +232,6 @@ public class MainActivity extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ITALY);
         dateOfEmpField.setText(sdf.format(myCalendar.getTime()));
     }
+
+
 }
