@@ -43,11 +43,16 @@ public class ReaderWriter {
 
     }
 
-    public static void deleteEmp(File folder, String name, int salary){
+    public static void deleteEmp(File folder, String name){
 
         String s = name + ".txt";
         File file = new File(folder, s);
         file.delete();
+
+    }
+
+    public static void reduceEmployeeStaticData(int salary){
+
         Employee.sumOfSalaries -= salary;
         Employee.numberOfEmployees --;
     }
@@ -97,6 +102,46 @@ public class ReaderWriter {
 
         int sumOfSalaries = sharedPreferences.getInt("sumOfSalaries", 0);
         return sumOfSalaries;
+    }
+
+    public static void loadData(SharedPreferences sharedPreferences) {
+
+        Employee.numberOfEmployees = ReaderWriter.loadNumberOfEmp(sharedPreferences);
+        Employee.sumOfSalaries = ReaderWriter.loadSumOfSalaries(sharedPreferences);
+    }
+
+    protected static String nameSubstringMaker(String empData) {
+
+        String nameSubstring = (empData.substring((empData.indexOf(':') + 2), empData.indexOf(',')));
+        return nameSubstring;
+    }
+
+    protected static int salarySubstringMaker(String empData) {
+
+        String salarySubstringStepOne = empData.substring(empData.lastIndexOf("Salary"), empData.lastIndexOf("Date"));
+        String salarySubstringFinal = salarySubstringStepOne.substring((salarySubstringStepOne.indexOf(':') + 2), salarySubstringStepOne.indexOf('k'));
+        return Integer.parseInt(salarySubstringFinal);
+    }
+
+    protected static String idSubstringMaker(String empData) {
+
+        String idSubstringStepOne = empData.substring(empData.lastIndexOf("ID"), empData.lastIndexOf("Position"));
+        String idSubstringFinal = idSubstringStepOne.substring((idSubstringStepOne.indexOf(':') + 2), idSubstringStepOne.indexOf(','));
+        return idSubstringFinal;
+    }
+
+    protected static String jobSubstringMaker(String empData) {
+
+        String jobSubstringStepOne = empData.substring(empData.lastIndexOf("Position"), empData.lastIndexOf("Salary"));
+        String jobSubstringFinal = jobSubstringStepOne.substring((jobSubstringStepOne.indexOf(':') + 2), jobSubstringStepOne.indexOf(','));
+        return jobSubstringFinal;
+    }
+
+    protected static String dateSubstringMaker(String empData) {
+
+        String dateSubstringStepOne = empData.substring(empData.lastIndexOf("Date"));
+        String dateSubstringFinal = dateSubstringStepOne.substring((dateSubstringStepOne.indexOf(':') + 2));
+        return dateSubstringFinal;
     }
 
 

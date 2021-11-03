@@ -2,14 +2,15 @@ package com.khystudent.restaurantemployees;
 
 import static android.content.ContentValues.TAG;
 
+import androidx.annotation.RequiresPermission;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,7 +20,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     EditText idField;
     EditText jobPositionField;
     EditText salaryField;
-    EditText dateOfEmplField;
+    EditText dateOfEmpField;
 
     ListView employeeList;
 
@@ -61,13 +61,13 @@ public class MainActivity extends AppCompatActivity {
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
         employeeList.setAdapter(adapter);
         ReaderWriter.loadArchive(ReaderWriter.getFolder(MainActivity.this), list);
-        Employee.loadData(sharedPreferences);
+        ReaderWriter.loadData(sharedPreferences);
 
         setListeners();
 
     }
 
-    protected void setListeners(){
+    protected void setListeners() {
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
         };
 
-        dateOfEmplField.setOnClickListener(new View.OnClickListener() {
+        dateOfEmpField.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -108,25 +108,38 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                 String empData = adapterView.getItemAtPosition(i).toString();
-                ReaderWriter.deleteEmp(ReaderWriter.getFolder(MainActivity.this), nameSubstringMaker(empData), Integer.parseInt(salarySubstringMaker(empData)));
+
+                nameField.setText(ReaderWriter.nameSubstringMaker(empData));
+                nameField.setInputType(InputType.TYPE_NULL);
+                idField.setText(ReaderWriter.idSubstringMaker(empData));
+                jobPositionField.setText(ReaderWriter.jobSubstringMaker(empData));
+                salaryField.setText(String.valueOf(ReaderWriter.salarySubstringMaker(empData)));
+                dateOfEmpField.setText(ReaderWriter.dateSubstringMaker(empData));
+
+                ReaderWriter.reduceEmployeeStaticData(ReaderWriter.salarySubstringMaker(empData));
+
                 list.remove(i);
                 adapter.notifyDataSetChanged();
                 updateField();
+
             }
         });
-    }
 
-    protected String nameSubstringMaker(String empData){
+        employeeList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-        String nameSubstring = (empData.substring((empData.indexOf(':')+2), empData.indexOf(',')));
-        return nameSubstring;
-    }
+                String empData = adapterView.getItemAtPosition(i).toString();
 
-    protected String salarySubstringMaker(String empData){
-
-        String salarySubstringStepOne = empData.substring(empData.lastIndexOf("Salary"), empData.lastIndexOf("Date"));
-        String salarySubstringFinal = salarySubstringStepOne.substring((salarySubstringStepOne.indexOf(':')+2), salarySubstringStepOne.indexOf('k'));
-        return salarySubstringFinal;
+                ReaderWriter.deleteEmp(ReaderWriter.getFolder(MainActivity.this), ReaderWriter.nameSubstringMaker(empData));
+                ReaderWriter.reduceEmployeeStaticData(ReaderWriter.salarySubstringMaker(empData));
+                list.remove(i);
+                adapter.notifyDataSetChanged();
+                updateField();
+                ReaderWriter.saveToShared(sharedPreferences);
+                return false;
+            }
+        });
     }
 
     protected void getText() {
@@ -135,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
         String id = idField.getText().toString();
         String job = jobPositionField.getText().toString();
         String salary = salaryField.getText().toString();
-        String date = dateOfEmplField.getText().toString();
+        String date = dateOfEmpField.getText().toString();
 
         if (name.isEmpty() || id.isEmpty() || job.isEmpty() || salary.isEmpty() || date.isEmpty()) {
 
@@ -175,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
         idField.setText("");
         jobPositionField.setText("");
         salaryField.setText("");
-        dateOfEmplField.setText("");
+        dateOfEmpField.setText("");
 
     }
 
@@ -196,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
         idField = findViewById(R.id.id_number_field);
         jobPositionField = findViewById(R.id.position_field);
         salaryField = findViewById(R.id.salary_field);
-        dateOfEmplField = findViewById(R.id.empl_date_field);
+        dateOfEmpField = findViewById(R.id.empl_date_field);
         saveBtn = findViewById(R.id.save_btn);
 
         numberOfEmp = findViewById(R.id.num_of_empl);
@@ -209,6 +222,6 @@ public class MainActivity extends AppCompatActivity {
 
         String myFormat = "dd/MM/yyyy";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.ITALY);
-        dateOfEmplField.setText(sdf.format(myCalendar.getTime()));
+        dateOfEmpField.setText(sdf.format(myCalendar.getTime()));
     }
 }

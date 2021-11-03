@@ -25,32 +25,6 @@ public class Employee {
         sumOfSalaries += salary;
 
     }
-
-    public static void loadData(SharedPreferences sharedPreferences) {
-
-        numberOfEmployees = ReaderWriter.loadNumberOfEmp(sharedPreferences);
-        sumOfSalaries = ReaderWriter.loadSumOfSalaries(sharedPreferences);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getPosition() {
-        return position;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public int getSalary() {
-        return salary;
-    }
-
-    public String getDateOfEmploy() {
-        return dateOfEmploy;
-    }
 }
 
 
