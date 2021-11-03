@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     TextView medianSalary;
 
     ArrayList<String> list = new ArrayList<>();
+    ArrayAdapter<String> adapter;
     SharedPreferences sharedPreferences;
 
     String name;
@@ -55,15 +56,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         setFields();
+
         sharedPreferences = getSharedPreferences("com.khystudent.restaurantemployees.MyPrefs", MODE_PRIVATE);
-
-
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
         employeeList.setAdapter(adapter);
-
         ReaderWriter.loadArchive(ReaderWriter.getFolder(MainActivity.this), list);
         Employee.loadData(sharedPreferences);
 
+        setListeners();
+
+    }
+
+    protected void setListeners(){
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,22 +107,26 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-                String t = adapterView.getItemAtPosition(i).toString();
-                Log.d(TAG, "onItemClick: "+t);
-                String x = (t.substring((t.indexOf(':')+2), t.indexOf(',')));
-                Log.d(TAG, "onItemClick: " +x);
-                String y = t.substring(t.lastIndexOf("Salary"), t.lastIndexOf("Date"));
-                String z = y.substring((y.indexOf(':')+2), y.indexOf('k'));
-                Log.d(TAG, "onItemClick: "+y);
-                Log.d(TAG, "onItemClick: "+z);
-                Log.d(TAG, "onItemClick: "+Integer.parseInt(z));
-                ReaderWriter.deleteEmp(ReaderWriter.getFolder(MainActivity.this), x, Integer.parseInt(z));
+                String empData = adapterView.getItemAtPosition(i).toString();
+                ReaderWriter.deleteEmp(ReaderWriter.getFolder(MainActivity.this), nameSubstringMaker(empData), Integer.parseInt(salarySubstringMaker(empData)));
                 list.remove(i);
                 adapter.notifyDataSetChanged();
                 updateField();
             }
         });
+    }
 
+    protected String nameSubstringMaker(String empData){
+
+        String nameSubstring = (empData.substring((empData.indexOf(':')+2), empData.indexOf(',')));
+        return nameSubstring;
+    }
+
+    protected String salarySubstringMaker(String empData){
+
+        String salarySubstringStepOne = empData.substring(empData.lastIndexOf("Salary"), empData.lastIndexOf("Date"));
+        String salarySubstringFinal = salarySubstringStepOne.substring((salarySubstringStepOne.indexOf(':')+2), salarySubstringStepOne.indexOf('k'));
+        return salarySubstringFinal;
     }
 
     protected void getText() {
@@ -180,7 +188,6 @@ public class MainActivity extends AppCompatActivity {
     protected void saveData(Employee saved) {
         ReaderWriter.saveFile(ReaderWriter.getFolder(MainActivity.this), name, print);
         ReaderWriter.saveToShared(sharedPreferences);
-
     }
 
     protected void setFields() {
