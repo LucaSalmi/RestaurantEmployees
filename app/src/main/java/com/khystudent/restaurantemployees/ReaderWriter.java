@@ -57,7 +57,12 @@ public class ReaderWriter {
         Employee.numberOfEmployees --;
     }
 
-
+    /**
+     * loads the array in Main with employees data
+     * @param folder file directory adress
+     * @param list ArrayList coupled with adapter for ListView
+     * @return filled up array
+     */
     public static ArrayList<String> loadArchive(File folder, ArrayList<String> list) {
 
         File[] folderContent = folder.listFiles();
@@ -82,6 +87,8 @@ public class ReaderWriter {
 
         return list;
     }
+
+    // all the methods below manages data to and from sharedPreferences
 
     public static void saveToShared(SharedPreferences sharedPreferences) {
 
@@ -109,6 +116,8 @@ public class ReaderWriter {
         Employee.numberOfEmployees = ReaderWriter.loadNumberOfEmp(sharedPreferences);
         Employee.sumOfSalaries = ReaderWriter.loadSumOfSalaries(sharedPreferences);
     }
+
+    //all of the methods below extract a specific substring from the String visualized in Main
 
     protected static String nameSubstringMaker(String empData) {
 
