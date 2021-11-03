@@ -32,6 +32,25 @@ public class Employee {
         sumOfSalaries = ReaderWriter.loadSumOfSalaries(sharedPreferences);
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getSalary() {
+        return salary;
+    }
+
+    public String getDateOfEmploy() {
+        return dateOfEmploy;
+    }
 }
 
 

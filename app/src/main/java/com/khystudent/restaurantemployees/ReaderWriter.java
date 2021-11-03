@@ -33,6 +33,7 @@ public class ReaderWriter {
         try {
             File emp = new File(folder, name + ".txt");
             PrintWriter writer = new PrintWriter(emp);
+
             writer.write(print);
             writer.close();
 
@@ -40,6 +41,15 @@ public class ReaderWriter {
             e.printStackTrace();
         }
 
+    }
+
+    public static void deleteEmp(File folder, String name, int salary){
+
+        String s = name + ".txt";
+        File file = new File(folder, s);
+        file.delete();
+        Employee.sumOfSalaries -= salary;
+        Employee.numberOfEmployees --;
     }
 
 
@@ -51,6 +61,7 @@ public class ReaderWriter {
 
             for (File file : folderContent) {
                 if (file.isFile()) {
+
                     try {
                         String temp = file.getName();
                         File readFile = new File(folder, temp);

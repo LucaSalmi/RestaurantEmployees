@@ -99,6 +99,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        employeeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                String t = adapterView.getItemAtPosition(i).toString();
+                Log.d(TAG, "onItemClick: "+t);
+                String x = (t.substring((t.indexOf(':')+2), t.indexOf(',')));
+                Log.d(TAG, "onItemClick: " +x);
+                String y = t.substring(t.lastIndexOf("Salary"), t.lastIndexOf("Date"));
+                String z = y.substring((y.indexOf(':')+2), y.indexOf('k'));
+                Log.d(TAG, "onItemClick: "+y);
+                Log.d(TAG, "onItemClick: "+z);
+                Log.d(TAG, "onItemClick: "+Integer.parseInt(z));
+                ReaderWriter.deleteEmp(ReaderWriter.getFolder(MainActivity.this), x, Integer.parseInt(z));
+                list.remove(i);
+                adapter.notifyDataSetChanged();
+                updateField();
+            }
+        });
+
     }
 
     protected void getText() {
@@ -126,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
 
         updateField();
         clearFields();
-        saveData();
+        saveData(saved);
 
 
     }
@@ -152,19 +172,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        ReaderWriter.saveFile(ReaderWriter.getFolder(MainActivity.this), name, print);
-        ReaderWriter.saveToShared(sharedPreferences);
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
         updateField();
     }
 
-    protected void saveData() {
+    protected void saveData(Employee saved) {
         ReaderWriter.saveFile(ReaderWriter.getFolder(MainActivity.this), name, print);
         ReaderWriter.saveToShared(sharedPreferences);
 
