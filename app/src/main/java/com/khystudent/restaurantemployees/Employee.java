@@ -14,19 +14,20 @@ public class Employee {
     protected static int sumOfSalaries;
 
 
-    public Employee(String name, int id, String position, int salary, String dateOfEmploy){
+    public Employee(String name, int id, String position, int salary, String dateOfEmploy) {
 
         this.name = name;
         this.id = id;
         this.position = position;
         this.salary = salary;
         this.dateOfEmploy = dateOfEmploy;
-        numberOfEmployees ++;
+        numberOfEmployees++;
         sumOfSalaries += salary;
 
     }
 
-    public static void loadData(SharedPreferences sharedPreferences){
+    public static void loadData(SharedPreferences sharedPreferences) {
+
         numberOfEmployees = ReaderWriter.loadNumberOfEmp(sharedPreferences);
         sumOfSalaries = ReaderWriter.loadSumOfSalaries(sharedPreferences);
     }

@@ -1,3 +1,16 @@
 <resources>
     <string name="app_name">RestaurantEmployees</string>
+    <string name="emp_name">"Name: "</string>
+    <string name="emp_id">", ID: "</string>
+    <string name="emp_position">", Position: "</string>
+    <string name="emp_salary">", Salary: "</string>
+    <string name="emp_date">", Date of employment: "</string>
+    <string name="money">kr</string>
+    <string name="hint_name">Name</string>
+    <string name="hint_id">ID</string>
+    <string name="hint_position">Position</string>
+    <string name="hin_salary">Salary</string>
+    <string name="hint_date">Date Of Employment</string>
+    <string name="title_num_emp">Employees Total</string>
+    <string name="title_median_salary">Median Salary</string>
 </resources>
