@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -36,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
 
     ArrayList<String> list = new ArrayList<>();
     SharedPreferences sharedPreferences;
+
+    String name;
+    String print;
 
 
     @Override
@@ -67,13 +71,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        employeeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                list.remove(i);
+                adapter.notifyDataSetChanged();
+
+            }
+        });
+
     }
 
     protected void getText() {
 
-        String name = nameField.getText().toString();
+        name = nameField.getText().toString();
         String id = idField.getText().toString();
-        Log.d(TAG, "getText: "+id);
         String job = jobPositionField.getText().toString();
         String salary = salaryField.getText().toString();
         String date = dateOfEmplField.getText().toString();
@@ -84,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        String print = name + ", " + id + ", " + job + ", " + salary + ", " + date;
+        print = name + ", " + id + ", " + job + ", " + salary + ", " + date;
         list.add(print);
 
         Employee saved = new Employee(name, Integer.parseInt(id), job, Integer.parseInt(salary), date);
@@ -114,14 +127,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        ReaderWriter.saveFile(ReaderWriter.getFolder(MainActivity.this), list);
+        ReaderWriter.saveFile(ReaderWriter.getFolder(MainActivity.this), name, print);
         ReaderWriter.saveToShared(sharedPreferences);
-
-
     }
 
     protected void saveData(){
-        ReaderWriter.saveFile(ReaderWriter.getFolder(MainActivity.this), list);
+        ReaderWriter.saveFile(ReaderWriter.getFolder(MainActivity.this), name, print);
         ReaderWriter.saveToShared(sharedPreferences);
 
     }

@@ -29,25 +29,26 @@ public class ReaderWriter{
         return folder;
     }
 
-    protected static void saveFile(File folder, ArrayList<String> list){
+    protected static void saveFile(File folder, String name, String print){
 
-        int i = 0;
 
-        for (String s : list) {
 
             try {
-                File emp = new File(folder, i +".txt");
+                File emp = new File(folder, name +".txt");
                 PrintWriter writer = new PrintWriter(emp);
-                writer.write(s);
+                writer.write(print);
                 writer.close();
-                i++;
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
 
 
-        }
+
+
+    }
+
+    protected static void deleteEmp(File folder){
 
     }
 
@@ -95,6 +96,8 @@ public class ReaderWriter{
         int sumOfSalaries = sharedPreferences.getInt("sumOfSalaries", 0);
         return sumOfSalaries;
     }
+
+
 
 
 }
