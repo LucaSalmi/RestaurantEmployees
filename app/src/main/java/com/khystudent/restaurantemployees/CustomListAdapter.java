@@ -43,14 +43,7 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
         holder.linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainActivity.empData = (listData.get(holder.getAdapterPosition()));
-                Log.d(TAG, "onClick: "+ MainActivity.empData);
 
-                String empData = listData.get(holder.getAdapterPosition());
-
-                ReaderWriter.deleteEmp(ReaderWriter.getFolder(context), ReaderWriter.nameSubstringMaker(empData));
-                ReaderWriter.reduceEmployeeStaticData(ReaderWriter.salarySubstringMaker(empData));
-                listData.remove(holder.getAdapterPosition());
             }
         });
 

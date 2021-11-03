@@ -1,9 +1,12 @@
 package com.khystudent.restaurantemployees;
 
+import static android.content.ContentValues.TAG;
+
 import android.app.DatePickerDialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -30,8 +33,6 @@ public class MainActivity extends AppCompatActivity {
     EditText dateOfEmpField;
     RecyclerView recyclerView;
 
-    //ListView employeeList;
-
     Button saveBtn;
 
     TextView numberOfEmp;
@@ -44,8 +45,6 @@ public class MainActivity extends AppCompatActivity {
     String print;
 
     final Calendar myCalendar = Calendar.getInstance();
-
-    public static String empData;
 
 
     @Override
@@ -105,49 +104,6 @@ public class MainActivity extends AppCompatActivity {
                         myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
-
-
-        /*
-        .setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                String empData = adapterView.getItemAtPosition(i).toString();
-
-                nameField.setText(ReaderWriter.nameSubstringMaker(empData));
-                nameField.setInputType(InputType.TYPE_NULL);
-                idField.setText(ReaderWriter.idSubstringMaker(empData));
-                jobPositionField.setText(ReaderWriter.jobSubstringMaker(empData));
-                salaryField.setText(String.valueOf(ReaderWriter.salarySubstringMaker(empData)));
-                dateOfEmpField.setText(ReaderWriter.dateSubstringMaker(empData));
-
-                ReaderWriter.reduceEmployeeStaticData(ReaderWriter.salarySubstringMaker(empData));
-
-                list.remove(i);
-                adapter.notifyDataSetChanged();
-                updateField();
-
-            }
-        });
-
-
-        employeeList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                String empData = adapterView.getItemAtPosition(i).toString();
-
-                ReaderWriter.deleteEmp(ReaderWriter.getFolder(MainActivity.this), ReaderWriter.nameSubstringMaker(empData));
-                ReaderWriter.reduceEmployeeStaticData(ReaderWriter.salarySubstringMaker(empData));
-                list.remove(i);
-                adapter.notifyDataSetChanged();
-                updateField();
-                ReaderWriter.saveToShared(sharedPreferences);
-                return false;
-            }
-        });
-
-         */
     }
 
     protected void getText() {
