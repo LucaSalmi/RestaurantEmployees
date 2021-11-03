@@ -51,7 +51,6 @@ public class CustomListAdapter extends RecyclerView.Adapter<CustomListAdapter.Vi
                 ReaderWriter.deleteEmp(ReaderWriter.getFolder(context), ReaderWriter.nameSubstringMaker(empData));
                 ReaderWriter.reduceEmployeeStaticData(ReaderWriter.salarySubstringMaker(empData));
                 listData.remove(holder.getAdapterPosition());
-                ReaderWriter.saveToShared(sharedPreferences);
             }
         });
 
