@@ -2,4 +2,5 @@
 <resources>
    <dimen name="margin_5">5dp</dimen>
     <dimen name="margin_15">15dp</dimen>
+    <dimen name="frame_thick">1dp</dimen>
 </resources>
