@@ -13,4 +13,5 @@
     <string name="hint_date">Date Of Employment</string>
     <string name="title_num_emp">Employees Total</string>
     <string name="title_median_salary">Median Salary</string>
+    <string name="save_btn_text">save</string>
 </resources>
