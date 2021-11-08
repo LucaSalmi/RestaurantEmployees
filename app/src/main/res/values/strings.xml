@@ -16,4 +16,7 @@
     <string name="save_btn_text">save</string>
     <string name="alert_dialog_title">Erase Entry</string>
     <string name="alert_dialog_message">Are you sure you want to erase this entry?</string>
+    <string name="toast_text_empty_fields">No empty fields allowed</string>
+    <string name="empty_string" />
+    <string name="folder_name">saveState</string>
 </resources>

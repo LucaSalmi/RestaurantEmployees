@@ -20,7 +20,7 @@ public class ReaderWriter {
 
     protected static File getFolder(AppCompatActivity context) {
 
-        File folder = new File(context.getFilesDir(), "saveState");
+        File folder = new File(context.getFilesDir(), context.getString(R.string.folder_name));
         if (!folder.exists()) {
             folder.mkdir();
         }
@@ -31,12 +31,13 @@ public class ReaderWriter {
     protected static void saveFile(File folder, String name, String print) {
 
         int n = 0;
-
+        String extension = ".txt";
         try {
-            File emp = new File(folder, name + ".txt");
+            //the while loop adds a number in the file name if two employees have the same name
+            File emp = new File(folder, name + extension);
             while(emp.exists()){
                 n++;
-                emp = new File(folder, name + n + ".txt");
+                emp = new File(folder, name + n + extension);
             }
 
             PrintWriter writer = new PrintWriter(emp);
@@ -52,7 +53,9 @@ public class ReaderWriter {
 
     public static void deleteEmp(File folder, String name){
 
-        String s = name + ".txt";
+        String extension = ".txt";
+
+        String s = name + extension;
         File file = new File(folder, s);
         file.delete();
 

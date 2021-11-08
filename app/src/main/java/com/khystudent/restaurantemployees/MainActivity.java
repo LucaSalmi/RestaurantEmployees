@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (name.isEmpty() || id.isEmpty() || job.isEmpty() || salary.isEmpty() || date.isEmpty()) {
 
-            Toast.makeText(MainActivity.this, "No empty fields allowed", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, getString(R.string.toast_text_empty_fields), Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -178,11 +178,11 @@ public class MainActivity extends AppCompatActivity {
 
     protected void clearFields() {
 
-        nameField.setText("");
-        idField.setText("");
-        jobPositionField.setText("");
-        salaryField.setText("");
-        dateOfEmpField.setText("");
+        nameField.setText(getString(R.string.empty_string));
+        idField.setText(getString(R.string.empty_string));
+        jobPositionField.setText(getString(R.string.empty_string));
+        salaryField.setText(getString(R.string.empty_string));
+        dateOfEmpField.setText(getString(R.string.empty_string));
 
     }
 
