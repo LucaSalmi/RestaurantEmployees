@@ -30,8 +30,15 @@ public class ReaderWriter {
 
     protected static void saveFile(File folder, String name, String print) {
 
+        int n = 0;
+
         try {
             File emp = new File(folder, name + ".txt");
+            while(emp.exists()){
+                n++;
+                emp = new File(folder, name + n + ".txt");
+            }
+
             PrintWriter writer = new PrintWriter(emp);
 
             writer.write(print);
@@ -131,27 +138,4 @@ public class ReaderWriter {
         String salarySubstringFinal = salarySubstringStepOne.substring((salarySubstringStepOne.indexOf(':') + 2), salarySubstringStepOne.indexOf('k'));
         return Integer.parseInt(salarySubstringFinal);
     }
-
-    protected static String idSubstringMaker(String empData) {
-
-        String idSubstringStepOne = empData.substring(empData.lastIndexOf("ID"), empData.lastIndexOf("Position"));
-        String idSubstringFinal = idSubstringStepOne.substring((idSubstringStepOne.indexOf(':') + 2), idSubstringStepOne.indexOf(','));
-        return idSubstringFinal;
-    }
-
-    protected static String jobSubstringMaker(String empData) {
-
-        String jobSubstringStepOne = empData.substring(empData.lastIndexOf("Position"), empData.lastIndexOf("Salary"));
-        String jobSubstringFinal = jobSubstringStepOne.substring((jobSubstringStepOne.indexOf(':') + 2), jobSubstringStepOne.indexOf(','));
-        return jobSubstringFinal;
-    }
-
-    protected static String dateSubstringMaker(String empData) {
-
-        String dateSubstringStepOne = empData.substring(empData.lastIndexOf("Date"));
-        String dateSubstringFinal = dateSubstringStepOne.substring((dateSubstringStepOne.indexOf(':') + 2));
-        return dateSubstringFinal;
-    }
-
-
 }
