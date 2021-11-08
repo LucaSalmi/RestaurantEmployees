@@ -3,9 +3,11 @@ package com.khystudent.restaurantemployees;
 import static android.content.ContentValues.TAG;
 
 import androidx.annotation.RequiresPermission;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.InputType;
@@ -101,40 +103,34 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        employeeList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                String empData = adapterView.getItemAtPosition(i).toString();
-
-                nameField.setText(ReaderWriter.nameSubstringMaker(empData));
-                nameField.setInputType(InputType.TYPE_NULL);
-                idField.setText(ReaderWriter.idSubstringMaker(empData));
-                jobPositionField.setText(ReaderWriter.jobSubstringMaker(empData));
-                salaryField.setText(String.valueOf(ReaderWriter.salarySubstringMaker(empData)));
-                dateOfEmpField.setText(ReaderWriter.dateSubstringMaker(empData));
-
-                ReaderWriter.reduceEmployeeStaticData(ReaderWriter.salarySubstringMaker(empData));
-
-                list.remove(i);
-                adapter.notifyDataSetChanged();
-                updateField();
-
-            }
-        });
-
         employeeList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
 
                 String empData = adapterView.getItemAtPosition(i).toString();
 
-                ReaderWriter.deleteEmp(ReaderWriter.getFolder(MainActivity.this), ReaderWriter.nameSubstringMaker(empData));
-                ReaderWriter.reduceEmployeeStaticData(ReaderWriter.salarySubstringMaker(empData));
-                list.remove(i);
-                adapter.notifyDataSetChanged();
-                updateField();
-                ReaderWriter.saveToShared(sharedPreferences);
+                new AlertDialog.Builder(MainActivity.this)
+                        .setTitle(getString(R.string.alert_dialog_title))
+                        .setMessage(getString(R.string.alert_dialog_message))
+
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                ReaderWriter.deleteEmp(ReaderWriter.getFolder(MainActivity.this), ReaderWriter.nameSubstringMaker(empData));
+                                ReaderWriter.reduceEmployeeStaticData(ReaderWriter.salarySubstringMaker(empData));
+                                list.remove(i);
+                                adapter.notifyDataSetChanged();
+                                updateField();
+                                ReaderWriter.saveToShared(sharedPreferences);
+
+                            }
+                        })
+
+                        .setNegativeButton(android.R.string.no, null)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
+
+
                 return false;
             }
         });

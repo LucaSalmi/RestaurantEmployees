@@ -14,4 +14,6 @@
     <string name="title_num_emp">Employees Total</string>
     <string name="title_median_salary">Median Salary</string>
     <string name="save_btn_text">save</string>
+    <string name="alert_dialog_title">Erase Entry</string>
+    <string name="alert_dialog_message">Are you sure you want to erase this entry?</string>
 </resources>
